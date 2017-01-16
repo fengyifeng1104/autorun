@@ -35,8 +35,6 @@
 	<classpathentry kind="lib" path="E:/workspace/autorun/lib/poi-3.14-20160307.jar"/>
 	<classpathentry kind="lib" path="E:/workspace/autorun/lib/poi-ooxml-3.14-20160307.jar"/>
 	<classpathentry kind="lib" path="E:/workspace/autorun/lib/poi-ooxml-schemas-3.14-20160307.jar"/>
-	<classpathentry kind="lib" path="E:/workspace/autorun/lib/slf4j-api-1.7.5.jar"/>
-	<classpathentry kind="lib" path="E:/workspace/autorun/lib/slf4j-simple-1.6.1.jar"/>
 	<classpathentry kind="lib" path="E:/workspace/autorun/lib/sqljdbc4.jar"/>
 	<classpathentry kind="lib" path="E:/workspace/autorun/lib/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="lib" path="E:/workspace/autorun/lib/YMTAutoResultV2.jar"/>

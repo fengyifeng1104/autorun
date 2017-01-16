@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration	
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!--
+	
+	<settings>
+		<setting name="defaultStatementTimeout" value="30" />
+		<setting name="cacheEnabled" value="false"/>
+		<setting name="logImpl" value="STDOUT_LOGGING" />
+		<setting name="localCacheScope" value="STATEMENT" />
+	</settings>
+	-->
+
+	<environments default="stc">
+		<environment id="stc">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url"
+					value="jdbc:mysql://172.16.101.211:30001/m2ctest" />
+				<property name="username" value="sa_test" />
+				<property name="password" value="ymtcs@2016" />
+				<property name="poolPingQuery" value="select 1+1" />
+				<property name="poolPingEnabled" value="true" />
+			</dataSource>
+		</environment>
+		
+	   
+	</environments>
+	<mappers>
+
+		<mapper resource="src/main/java/com/ymatou/autorun/datadriver/base/database/sqlwapper/Stc_caseMapper.xml" />
+	
+
+	</mappers>
+</configuration>

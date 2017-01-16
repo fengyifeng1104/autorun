@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ymatou.autorun.datadriver.base.database.mapping.StcMapper">
+
+	<select id="selectCaseDataById" resultType="com.ymatou.autorun.datadriver.base.database.model.Stc_CaseData"
+		parameterType="java.lang.Integer" flushCache="true">
+		select 
+		stc_case.CaseId,
+		stc_case.UserId,
+		stc_case.Model,
+		stc_case.SceneId,
+		stc_case.Scene,
+		stc_scene.Scene_host,
+		stc_scene.Scene_api,
+		stc_case.CaseDescription,
+		stc_case.CheckPoint,
+		stc_case.TemplateId,
+		stc_case.TemplateName,
+		stc_template.TemplateDetail,
+		stc_case.ExtraInputList,
+		stc_case.DefautCheckType,
+		stc_template.Input2SqlMap,
+		stc_template.Sql2MongoMap,
+		stc_template.Output2SqlMap,
+		stc_template.Output2MongoMap,
+		stc_case.ExtraCheckList
+		from stc_case 
+		left join stc_scene  on stc_case.SceneId=stc_scene.SceneId
+		left join stc_template  on stc_case.TemplateId=stc_template.TemplateId
+		where stc_case.CaseId=#{caseId}
+	</select>
+
+
+</mapper>
