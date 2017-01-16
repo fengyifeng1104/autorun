@@ -10,6 +10,7 @@ import com.ymatou.autorun.datadriver.data.ImportData;
 import com.ymatou.autorun.datadriver.execute.APICall;
 import com.ymatou.autorun.datadriver.execute.CaseExecuteFlow;
 import com.ymatou.autorun.datadriver.execute.helper.CaseExecute;
+import com.ymatou.autorun.datadriver.execute.helper.CaseExecuteService;
 import com.ymt.core.tool.Logger;
 
 public class CaseExecuteFlowImpl implements CaseExecuteFlow{
@@ -38,14 +39,14 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 
 	public void afterCall() {
 		Logger.comment("=================End Test Case=================");
-		Logger.generateResult(importData._getApi());
+		Logger.generateResult(importData.getApi());
 		
 	}
 	
 	
 	public Map<Integer, JSONObject> callbeforeApis() {
 		Map<Integer,JSONObject> ret = new HashMap<Integer,JSONObject>();
-		Map<Integer,ImportData> beforeCasesMap = importData._getDependCaseIds();
+		Map<Integer,ImportData> beforeCasesMap = importData.getDependCaseIds();
 		if(beforeCasesMap.size()>0){
 			Logger.comment("<<<<<<<<<<call before Apis Start, ParentId:"+ importData.getCaseId() +">>>>>>>>>>");
 			//ret = new HashMap<Integer,JSONObject>();
@@ -63,7 +64,36 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 
 
 	public JSONObject callApi() {
-		return null;
+		Logger.start(true, importData.getCaseSummary());
+		try {
+			//get api class 
+			apiCall = CaseExecuteService.generateApiCallInstance(importData.getHost(),importData.getApi(),importData.getReqType());
+		
+			//1 replace 全局数据
+			JSONObject jsonModel = CaseExecuteService.updateModelWithGlobalData(importData.getScenarioModel(), globalData.getKeyVal());
+
+			
+			//2 replace with 输入数据 和依赖数据
+			jsonModel = CaseExecuteService.updateModelWithData(jsonModel,  importData.getModelUpdateMap(), beforeApiRet);
+			
+			//3 set cookie if has
+			if (jsonModel.containsKey("cookies")){
+				apiCall.setCookies(jsonModel.getString("cookies").replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", ""));
+				jsonModel.remove("cookies");
+			}
+			
+			//4 call API and return data
+			JSONObject retJson = apiCall.callAndGetReturnData(jsonModel);
+			
+			//5 add before result
+			for(Integer id:beforeApiRet.keySet()){retJson.put(id.toString(),beforeApiRet.get(id));}
+			allRet = retJson;
+			return retJson;
+
+		} catch (Exception e) {
+			Logger.fail(e);;
+		}
+		return new JSONObject();
 	}
 
 

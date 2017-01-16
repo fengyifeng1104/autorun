@@ -63,21 +63,19 @@ public interface ImportData {
 	 * 依赖ids
 	 * @return
 	 */
-	public Map<Integer,ImportData> _getDependCaseIds();
+	public Map<Integer,ImportData> getDependCaseIds();
 	
-	public Map<Integer, List<String>> _getDependCaseIdsVal();
+	public Map<Integer, List<String>> getDependCaseIdsVal();
 	
 	/***
 	 * api
 	 */
 	
-	public String _getApi();
+	public String getApi();
 	
+	public String getHost();
 	
-	/***
-	 * 
-	 */
-	public String _getHost();
+	public String getReqType();
 	
 
 }

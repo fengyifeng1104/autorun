@@ -1,21 +1,20 @@
 package com.ymatou.autorun.datadriver;
 
-import java.io.File;
-
-import com.ymatou.autorun.datadriver.data.GlobalData;
-import com.ymatou.autorun.datadriver.data.ImportData;
-import com.ymatou.autorun.datadriver.data.impl.GlobalDataFromExcelImpl;
-import com.ymatou.autorun.datadriver.data.impl.ImportDataFromDBImpl;
-import com.ymatou.autorun.datadriver.execute.helper.CaseExecute;
+import com.alibaba.fastjson.JSON;
+import com.ymatou.autorun.datadriver.execute.APICall;
+import com.ymatou.autorun.datadriver.execute.helper.CaseExecuteService;
 
 public class mainTest {
 
 	public static void main(String[] args) {
+		String hostStr = "livemanage.iapi.ymatou.com";
+		String apiStr = "/api/Activity/CloseActivity";
+		String reqtypeStr = "POST";
+		APICall apiCall = CaseExecuteService.generateApiCallInstance(hostStr,apiStr,reqtypeStr);
 		
-		File file = new File("E:\\fyf\\Testing\\source\\YmatouTest\\resource\\TestData.xls");
-		GlobalData globalData = new GlobalDataFromExcelImpl(file, 1);
-		ImportData importData = new ImportDataFromDBImpl(10004);
-		CaseExecute.executeAndCheck(importData,globalData);
+		apiCall.callAndGetReturnData(JSON.parseObject("{\"UserId\":20573576,\"ActivityId\":165499}"));
+		
+		
 	}
 
 }

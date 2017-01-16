@@ -15,6 +15,7 @@ import com.ymatou.autorun.datadriver.base.utils.YMTDateUtil;
 import com.ymatou.autorun.datadriver.data.AssertData;
 import com.ymatou.autorun.datadriver.data.domain.DBCheckDataBean;
 import com.ymatou.autorun.datadriver.execute.APICall;
+import com.ymatou.autorun.datadriver.execute.impl.APICallImpl;
 import com.ymatou.autorun.datadriver.face.SqlSearch;
 
 public class CaseExecuteService {
@@ -91,8 +92,8 @@ public class CaseExecuteService {
 		
 	}
 
-	public static APICall generateApiCallInstance(String host,String api){
-		return null;
+	public static APICall generateApiCallInstance(String host,String api,String reqType){
+		return new APICallImpl(host, api, reqType);
 
 	}
 

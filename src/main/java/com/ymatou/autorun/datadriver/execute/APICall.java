@@ -1,14 +1,13 @@
 package com.ymatou.autorun.datadriver.execute;
 
 import java.util.List;
-
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 public interface APICall {
 	
-	public String getMode();
+	public String getReqType();
 	
-	public String getSysUrl();
+	public String getHost();
 	
 	public String getApi();
 	

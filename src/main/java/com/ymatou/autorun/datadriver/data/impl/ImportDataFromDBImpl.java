@@ -24,13 +24,16 @@ public class ImportDataFromDBImpl  implements ImportData{
 	private Map<String, String> modelUpdateMap = new HashMap<String, String>();
 	private Map<String, String> caseAssert = new HashMap<String, String>();
 	
-	private Map<Integer,ImportData> _dependCaseIds = new HashMap<Integer,ImportData>();
-	private Map<Integer, List<String>> _dependCaseIdsVal =new HashMap<Integer, List<String>>();
-	private String _api;
-	private String _host;
+	private Map<Integer,ImportData> dependCaseIds = new HashMap<Integer,ImportData>();
+	private Map<Integer, List<String>> dependCaseIdsVal =new HashMap<Integer, List<String>>();
+	private String api;
+	private String host;
+	private String reqType;
 	
 	
-	
+	public ImportDataFromDBImpl(){
+		
+	}
 	
 	public ImportDataFromDBImpl(int caseId){
 		initData(caseId);
@@ -56,9 +59,9 @@ public class ImportDataFromDBImpl  implements ImportData{
 			
 			caseAssert = StringToMap(db_CaseData.getExtraCheckList());
 			
-			_api = db_CaseData.getScene_api();
+			api = db_CaseData.getScene_api();
 			
-			_host = db_CaseData.getScene_host();
+			host = db_CaseData.getScene_host();
 			
 			for(String key : modelUpdateMap.keySet()){
 				Object V = modelUpdateMap.get(key);
@@ -67,14 +70,14 @@ public class ImportDataFromDBImpl  implements ImportData{
 					Integer beforeId = Integer.parseInt(args[0]);
 					String pathKey = args[1];
 					
-					if (_dependCaseIdsVal.keySet().contains(beforeId)){
-						_dependCaseIdsVal.get(beforeId).add(pathKey);
+					if (dependCaseIdsVal.keySet().contains(beforeId)){
+						dependCaseIdsVal.get(beforeId).add(pathKey);
 					}else{
 						List<String> keysList = new ArrayList<String>();
 						keysList.add(pathKey);
-						_dependCaseIdsVal.put(beforeId, keysList);
+						dependCaseIdsVal.put(beforeId, keysList);
 					}
-					_dependCaseIds.put(beforeId, new ImportDataFromDBImpl(beforeId));
+					dependCaseIds.put(beforeId, new ImportDataFromDBImpl(beforeId));
 				}	
 			}
 		} catch (Exception e) {
@@ -118,25 +121,80 @@ public class ImportDataFromDBImpl  implements ImportData{
 	}
 
 	@Override
-	public Map<Integer, ImportData> _getDependCaseIds() {
-		return this._dependCaseIds;
+	public Map<Integer, ImportData> getDependCaseIds() {
+		return this.dependCaseIds;
 	}
 
 	@Override
-	public Map<Integer, List<String>> _getDependCaseIdsVal() {
-		return this._dependCaseIdsVal;
+	public Map<Integer, List<String>> getDependCaseIdsVal() {
+		return this.dependCaseIdsVal;
 	}
 
 	@Override
-	public String _getApi() {
-		return this._api;
+	public String getApi() {
+		return this.api;
 	}
 
 	@Override
-	public String _getHost() {
-		return this._host;
+	public String getHost() {
+		return this.host;
 	}
 	
+	@Override
+	public String getReqType() {
+		return this.reqType;
+	}
+	
+	
+
+	public void setCaseId(int caseId) {
+		this.caseId = caseId;
+	}
+
+	public void setCaseSummary(String caseSummary) {
+		this.caseSummary = caseSummary;
+	}
+
+	public void setScenario(String scenario) {
+		this.scenario = scenario;
+	}
+
+	public void setScenarioSummary(String scenarioSummary) {
+		this.scenarioSummary = scenarioSummary;
+	}
+
+	public void setScenarioModel(JSONObject scenarioModel) {
+		this.scenarioModel = scenarioModel;
+	}
+
+	public void setModelUpdateMap(Map<String, String> modelUpdateMap) {
+		this.modelUpdateMap = modelUpdateMap;
+	}
+
+	public void setCaseAssert(Map<String, String> caseAssert) {
+		this.caseAssert = caseAssert;
+	}
+
+	public void setDependCaseIds(Map<Integer, ImportData> dependCaseIds) {
+		this.dependCaseIds = dependCaseIds;
+	}
+
+	public void setDependCaseIdsVal(Map<Integer, List<String>> dependCaseIdsVal) {
+		this.dependCaseIdsVal = dependCaseIdsVal;
+	}
+
+	public void setApi(String api) {
+		this.api = api;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public void setReqType(String reqType) {
+		this.reqType = reqType;
+	}
+
 	/***
 	 * a=b;c=d;T=1
 	 * @param s
@@ -155,5 +213,13 @@ public class ImportDataFromDBImpl  implements ImportData{
 		}
 		return map;
 	}
+
+
+
+	
+	
+	
+	
+	
 
 }
