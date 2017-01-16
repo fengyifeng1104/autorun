@@ -18,5 +18,28 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/asm-3.3.1.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/cglib-2.2.2.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/CreateCode.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/curvesapi-1.03.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/freemarker.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/httpclient-4.3.1.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/httpclient-cache-4.3.1.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/httpcore-4.3.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/httpmime-4.3.1.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/json-lib-2.2.3-jdk15.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/mybatis-3.3.0.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/mybatis-generator-core-1.3.2.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/org.json.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/poi-3.14-20160307.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/poi-ooxml-3.14-20160307.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/poi-ooxml-schemas-3.14-20160307.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/slf4j-api-1.7.5.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/slf4j-simple-1.6.1.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/sqljdbc4.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/xmlbeans-2.6.0.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/YMTAutoResultV2.jar"/>
+	<classpathentry kind="lib" path="E:/workspace/autorun/lib/YMTTF.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
