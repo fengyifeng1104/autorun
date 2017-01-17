@@ -52,6 +52,7 @@ public class CaseExecute    {
 	public static void main(String[] args) throws Exception {
 
 		System.out.println(System.getProperty("user.dir")+"\\resource\\TestData.xls");
+		System.out.println(System.getProperty("user.dir")+"\\resource\\TestData.xls");
 		
 	    File file = new File(System.getProperty("user.dir")+"\\resource\\TestData.xls");
    	
