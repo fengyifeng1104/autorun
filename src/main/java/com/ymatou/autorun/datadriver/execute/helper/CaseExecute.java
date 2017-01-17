@@ -32,7 +32,7 @@ public class CaseExecute {
 		CaseExecuteFlow caseExecuteFlow = new CaseExecuteFlowImpl(importData,globalData);
 		caseExecuteFlow.callbeforeApis();
 		JSONObject ret = caseExecuteFlow.callApi();
-		caseExecuteFlow.commonCheck();
+		caseExecuteFlow.commonCheck();   
 		caseExecuteFlow.userDefinedCheck();
 		return ret;
 	}
