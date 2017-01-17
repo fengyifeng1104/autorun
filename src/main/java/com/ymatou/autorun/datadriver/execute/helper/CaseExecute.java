@@ -23,7 +23,9 @@ public class CaseExecute {
 	}
 
 	public static void executeAndCheck(List<ImportData> importDatas,GlobalData globalData){
-		importDatas.forEach(i->executeAndCheck(i,globalData));
+		for(ImportData importData : importDatas){
+			executeAndCheck(importData,globalData);
+		}
 	}
 
 	public static JSONObject execute(ImportData importData,GlobalData globalData) {
@@ -37,7 +39,9 @@ public class CaseExecute {
 	
 	public static List<JSONObject> execute(List<ImportData> importDatas,GlobalData globalData){
 		 List<JSONObject> ret = new ArrayList<JSONObject>();
-		 importDatas.forEach(i-> ret.add(execute(i,globalData)));
+		 for(ImportData importData : importDatas){
+			 ret.add(execute(importData, globalData));
+			}
 		 return ret;
 	}
 	
