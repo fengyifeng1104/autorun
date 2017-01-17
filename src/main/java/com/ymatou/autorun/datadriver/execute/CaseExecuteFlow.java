@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 
-public interface CaseExecuteFlow {
+public interface CaseExecuteFlow     {
 	
 	public void beforeCall();
 	
