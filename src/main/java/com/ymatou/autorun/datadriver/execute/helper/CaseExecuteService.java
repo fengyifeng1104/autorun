@@ -19,7 +19,7 @@ import com.ymatou.autorun.datadriver.execute.APICall;
 import com.ymatou.autorun.datadriver.execute.impl.APICallImpl;
 import com.ymatou.autorun.datadriver.face.SqlSearch;
 
-public class CaseExecuteService {
+public class CaseExecuteService    {
 	
 	
 	/***
