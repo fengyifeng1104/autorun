@@ -10,7 +10,7 @@ import com.ymatou.autorun.datadriver.data.ImportData;
 import com.ymatou.autorun.datadriver.execute.CaseExecuteFlow;
 import com.ymatou.autorun.datadriver.execute.impl.CaseExecuteFlowImpl;
 
-public class CaseExecute {
+public class CaseExecute    {
 	
 	public static void executeAndCheck(ImportData importData,GlobalData globalData) {
 		CaseExecuteFlow caseExecuteFlow = new CaseExecuteFlowImpl(importData,globalData);
