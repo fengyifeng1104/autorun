@@ -1,5 +1,6 @@
 package com.ymatou.autorun.datadriver.execute.helper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +118,7 @@ public class CaseExecuteService {
 			 String dbName = AssertData.sqlClassPath +"."+tableName+"Wapper";
 			 try {
 				SqlSearch sqlsearch = (SqlSearch)Class.forName(dbName).newInstance();
-				Map<String, Object> tgtMap = new CaseInsensitiveMap(sqlsearch.selectBy((Map<String, Object>)searchMap));
+				Map<String, Object> tgtMap =new HashMap<String, Object>();;
 				for(String key:assertMap.keySet()){
 					if (tgtMap.containsKey(key)){
 					AssertUtil.assertResultEqual(MapUtil.hashMap(key, assertMap.get(key)), MapUtil.hashMap(key, tgtMap.get(key)));
