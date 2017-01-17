@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.ymatou.autorun.dataservice.dao.RunningDataDao;
 import com.ymatou.autorun.dataservice.model.RunningDataModel;
 
@@ -18,8 +19,8 @@ public class RunningService {
 	
 	
 	@Transactional
-	public List<RunningDataModel> getRunningDataByCasesIdList(List<Integer> caseIdList){
-		return runningDataDao.getRunningDataByCasesIdList(caseIdList);
+	public List<RunningDataModel> getRunningDataByCasesIdList(JSONArray caseIdList){
+		return runningDataDao.getRunningDataByCasesIdList(caseIdList.toString());
 	}
 
 }

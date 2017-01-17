@@ -6,6 +6,6 @@ import com.ymatou.autorun.dataservice.model.RunningDataModel;
 
 public interface RunningDataDao {
 	
-	public List<RunningDataModel> getRunningDataByCasesIdList(List<Integer> caseIdList);
+	public List<RunningDataModel> getRunningDataByCasesIdList(String caseIdList);
 
 }
