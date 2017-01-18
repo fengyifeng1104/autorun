@@ -1,5 +1,7 @@
 package com.ymatou.autorun.dataservice.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -7,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.ymatou.autorun.dataservice.model.RunningDataModel;
 import com.ymatou.autorun.dataservice.service.RunningService;
 
 @RestController
@@ -17,9 +20,14 @@ public class RunningController {
 	private RunningService runningService;
 	
 	@RequestMapping(value="/getRunningDataByCasesIdList",method={RequestMethod.POST})
-	public String getRunningDataByCasesIdList(@RequestBody JSONArray caseIdList){
-		runningService.getRunningDataByCasesIdList(caseIdList);
-		return "接受成功";
+	public List<RunningDataModel> getRunningDataByCasesIdList(@RequestBody JSONObject caseIdList){
+		
+		
+		System.out.println(caseIdList.get("userId"));
+		System.out.println(caseIdList.get("caseIdList"));
+		System.out.println("controller层运行正常");
+
+		return runningService.getRunningDataByCasesIdList(caseIdList);
 	}
 
 }
