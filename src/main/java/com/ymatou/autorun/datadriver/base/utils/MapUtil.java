@@ -10,7 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.ymt.core.tool.Logger;
+import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
+
 
 public class MapUtil {
 	public static Map<String,Object> pojoToMap(Object object){

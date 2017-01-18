@@ -7,13 +7,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ymt.core.tool.Logger;
+import com.google.common.base.Strings;
+import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
+
 
 
 public class AssertUtil {
@@ -145,9 +147,8 @@ public class AssertUtil {
 			Pattern pattern = Pattern.compile("\\d+\\.\\d+$|-\\d+\\.\\d+$|^\\d+$|-\\d+$");
 			boolean tgtMathcPtnAndActMatchPth = (pattern.matcher(tgtNodeObj.toString()).find()&&pattern.matcher(actNodeObj.toString()).find());
 			
-			boolean tgtIsNotNumAndActIsNum = !(StringUtils.isNumeric(tgtNodeObj.toString())) && (StringUtils.isNumeric(actNodeObj.toString()));
-			
-			boolean tgtIsNumAndActIsNotNum = (StringUtils.isNumeric(tgtNodeObj.toString())) && !(StringUtils.isNumeric(actNodeObj.toString()));
+			boolean tgtIsNotNumAndActIsNum = !(isNumeric(tgtNodeObj.toString())) && (isNumeric(actNodeObj.toString()));
+			boolean tgtIsNumAndActIsNotNum = (isNumeric(tgtNodeObj.toString())) && !(isNumeric(actNodeObj.toString()));
 			
 			if (tgtIsNotNumAndActIsNum || tgtIsNumAndActIsNotNum || tgtMathcPtnAndActMatchPth){
 				tgtNodeObj = Double.parseDouble(tgtNodeObj.toString());
@@ -273,9 +274,17 @@ public class AssertUtil {
 	}
 	
 	
+	public static boolean isNumeric(String str){
+	  try{
+		  Double.parseDouble(str);
+		  return true;
+	  }catch(NumberFormatException e){
+		  return false;
+	  }
+	}
 	
 	public static void main(String[] args) {
-		System.out.println(assertPreCheck(null,""));
+		System.out.println(isNumeric("1,0"));
 	}
 	
 	

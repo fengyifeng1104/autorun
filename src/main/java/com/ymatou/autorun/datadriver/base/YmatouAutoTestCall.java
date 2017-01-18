@@ -4,14 +4,15 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Joiner;
 import com.ymatou.autorun.datadriver.base.utils.JsonBeanUtil;
-import com.ymt.base.YmatouBaseCall;
-import com.ymt.core.tool.Logger;
+import com.ymatou.autorun.datadriver.base.ymttf.YmatouBaseCall;
+import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
+
 
 public class YmatouAutoTestCall extends YmatouBaseCall{
 	
@@ -107,7 +108,7 @@ public class YmatouAutoTestCall extends YmatouBaseCall{
 		
 		try{
 			//设置bean
-			setData(StringUtils.join(args,"&"));
+			setData(Joiner.on("&").join(args));
 			
 			//发送请求
 			this.callService();

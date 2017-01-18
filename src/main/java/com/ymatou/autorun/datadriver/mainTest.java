@@ -14,7 +14,6 @@ public class mainTest {
 		
 		apiCall.callAndGetReturnData(JSON.parseObject("{\"UserId\":20573576,\"ActivityId\":165499}"));
 		
-		
 	}
 
 }

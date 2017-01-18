@@ -7,9 +7,9 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.ymatou.autorun.datadriver.base.YmatouAutoTestCall;
 import com.ymatou.autorun.datadriver.base.utils.JsonBeanUtil;
+import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
 import com.ymatou.autorun.datadriver.execute.APICall;
-import com.ymt.base.YmatouBaseCall;
-import com.ymt.core.tool.Logger;
+
 
 
 public class APICallImpl implements APICall{

@@ -3,8 +3,7 @@ package com.ymatou.autorun.datadriver.base.database.sqlwapper;
 import java.util.List;
 
 import com.ymatou.autorun.datadriver.base.database.model.Stc_CaseData;
-import com.ymt.core.tool.Logger;
-import com.ymt.database.SqlManager;
+
 
 /************************************************************************************
  * @File name : StcCaseQueryWapper.java
@@ -14,10 +13,10 @@ import com.ymt.database.SqlManager;
  ************************************************************************************/
 
 public class StcCaseQueryWapper {
-	SqlManager manage;
+	//SqlManager manage;
 
 	public StcCaseQueryWapper() {
-		manage = new SqlManager("stc");
+		//manage = new SqlManager("stc");
 	}
 	
 	/**
@@ -28,18 +27,16 @@ public class StcCaseQueryWapper {
 	 */
 	@SuppressWarnings("unchecked")
 	public Stc_CaseData getCaseDataById(int caseId){
-		List<Stc_CaseData> ret =  manage.getSelectResults(
+	/*	List<Stc_CaseData> ret =  manage.getSelectResults(
 				"com.ymatou.autorun.datadriver.base.database.mapping.StcMapper.selectCaseDataById",caseId);
 		if (ret.size()<1){
 			throw  new IndexOutOfBoundsException("case id ["+ String.valueOf(caseId) +"] is not found in DB - StcCaseQueryWapper");
-		}
-		return ret.get(0);
+		}*/
+		return null;
 	}
 	
 	public static void main (String args[]){
 		Stc_CaseData aCaseDatas = new StcCaseQueryWapper().getCaseDataById(10001);
-		Logger.comment(aCaseDatas.getScene_host());
-		Logger.comment(aCaseDatas.getScene_api());
 		System.out.println("Done");
 	}
 
