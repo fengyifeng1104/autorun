@@ -25,7 +25,8 @@ public class RunningController {
 		
 		System.out.println(caseIdList.get("userId"));
 		System.out.println(caseIdList.get("caseIdList"));
-		System.out.println("controller层运行正常");
+		System.out.println("controller层运行222正常222fff");
+		System.out.println("controller层运行正常ssssssss");
 
 		return runningService.getRunningDataByCasesIdList(caseIdList);
 	}

@@ -61,14 +61,16 @@ public class APICallImpl implements APICall{
 	public JSONObject callAndGetReturnData(JSONObject params){
 		try{
 	
-			
-			if(getReqType().equals("GET")){
-				ymatouBaseCall.setData(params.toString());
-				
-			}else{
-				
-				//String paramStr = params.toString().replaceAll("\\{", "").replaceAll("\\}", "").replaceAll(":", "=").replaceAll(",", "&").replaceAll("\"", "");
-				ymatouBaseCall.setData(params.toString());
+			if (params!=null){
+				if(getReqType().equals("GET")){
+					ymatouBaseCall.setData(params.toString());
+					
+				}else{
+					
+					//String paramStr = params.toString().replaceAll("\\{", "").replaceAll("\\}", "").replaceAll(":", "=").replaceAll(",", "&").replaceAll("\"", "");
+					
+					ymatouBaseCall.setData(params.toString());
+				}
 			}
 			
 			ymatouBaseCall.callService();	

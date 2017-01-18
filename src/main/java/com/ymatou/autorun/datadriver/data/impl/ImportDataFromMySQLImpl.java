@@ -1,20 +1,17 @@
 package com.ymatou.autorun.datadriver.data.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ymatou.autorun.datadriver.base.database.model.Stc_CaseData;
-import com.ymatou.autorun.datadriver.base.database.sqlwapper.StcCaseQueryWapper;
 import com.ymatou.autorun.datadriver.data.ImportData;
+import com.ymatou.autorun.dataservice.model.RunningDataModel;
 
 
-public class ImportDataFromDBImpl  implements ImportData{
+public class ImportDataFromMySQLImpl  implements ImportData{
 	
-	private StcCaseQueryWapper stcCaseQueryWapper = new StcCaseQueryWapper();
 	
 	private int caseId;
 	private String caseSummary;
@@ -31,55 +28,35 @@ public class ImportDataFromDBImpl  implements ImportData{
 	private String reqType;
 	
 	
-	public ImportDataFromDBImpl(){
+	public ImportDataFromMySQLImpl(){
 		
 	}
 	
-	public ImportDataFromDBImpl(int caseId){
-		initData(caseId);
+	public ImportDataFromMySQLImpl(RunningDataModel runningDataModel){
+		initData(runningDataModel);
 	}
 	
 	
-	private void initData(int caseId){
+	private void initData(RunningDataModel runningDataModel){
 		//search for mysql
 		try {
-			Stc_CaseData db_CaseData = stcCaseQueryWapper.getCaseDataById(caseId);
 			
-			caseId = db_CaseData.getCaseId();
+			RunningDataModel ret = runningDataModel;
 			
-			caseSummary = db_CaseData.getCaseDescription();
+			caseId = ret.getCaseId();
 			
-			scenario = db_CaseData.getModel();
+			caseSummary = ret.getCaseDescription();
 			
-			scenarioSummary = db_CaseData.getScene();
-			
-			scenarioModel = JSON.parseObject(db_CaseData.getTemplateDetail());
+			scenarioModel = JSON.parseObject(ret.getTemplateDetail());
 		
-			modelUpdateMap = StringToMap(db_CaseData.getExtraInputList());
+
 			
-			caseAssert = StringToMap(db_CaseData.getExtraCheckList());
 			
-			api = db_CaseData.getScene_api();
+			api = ret.getSceneApi();
+			host = ret.getSceneHost();
+			reqType = ret.getReqMethod();
 			
-			host = db_CaseData.getScene_host();
-			
-			for(String key : modelUpdateMap.keySet()){
-				Object V = modelUpdateMap.get(key);
-				if (V.toString().contains(".")){
-					String[] args = V.toString().split("\\.");
-					Integer beforeId = Integer.parseInt(args[0]);
-					String pathKey = args[1];
-					
-					if (dependCaseIdsVal.keySet().contains(beforeId)){
-						dependCaseIdsVal.get(beforeId).add(pathKey);
-					}else{
-						List<String> keysList = new ArrayList<String>();
-						keysList.add(pathKey);
-						dependCaseIdsVal.put(beforeId, keysList);
-					}
-					dependCaseIds.put(beforeId, new ImportDataFromDBImpl(beforeId));
-				}	
-			}
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

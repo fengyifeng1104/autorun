@@ -34,7 +34,7 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 
 	public void beforeCall() {
 		Logger.createResultFile(importData.getCaseSummary());
-		Logger.comment("=================Start Case id:["+ importData.getCaseId() +"], scenario:"+importData.getScenario()+", summary:"+importData.getScenarioSummary()+"=================");
+		Logger.comment("=================Start Case id:["+ importData.getCaseId() +"], case summary:"+importData.getCaseSummary());
 
 	}
 
@@ -69,8 +69,11 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 		try {
 			//get api class 
 			apiCall = CaseExecuteService.generateApiCallInstance(importData.getHost(),importData.getApi(),importData.getReqType());
-		
-			//1 replace 全局数据
+			apiCall.callAndGetReturnData(importData.getScenarioModel());
+			
+			
+			
+			/*//1 replace 全局数据
 			JSONObject jsonModel = CaseExecuteService.updateModelWithGlobalData(importData.getScenarioModel(), globalData.getKeyVal());
 
 			
@@ -89,7 +92,9 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 			//5 add before result
 			for(Integer id:beforeApiRet.keySet()){retJson.put(id.toString(),beforeApiRet.get(id));}
 			allRet = retJson;
-			return retJson;
+			return retJson;*/
+			
+			return new JSONObject();
 
 		} catch (Exception e) {
 			Logger.fail(e);;

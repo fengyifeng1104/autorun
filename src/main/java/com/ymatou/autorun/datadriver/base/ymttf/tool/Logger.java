@@ -139,6 +139,7 @@ public class Logger {
         buildElementTestsuite(testsuite);
         getElementTestsuite().addAttribute("description", description);
         try {
+        	System.out.println(System.getProperty("user.dir"));
             XMLWriter writer =
                     new XMLWriter(new OutputStreamWriter(new FileOutputStream("./Results/" + folder + "/" + suitename
                             + ".xml"), "UTF-8"));
