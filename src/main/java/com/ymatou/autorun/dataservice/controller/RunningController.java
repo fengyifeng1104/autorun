@@ -22,7 +22,6 @@ public class RunningController {
 	@RequestMapping(value="/getRunningDataByCasesIdList",method={RequestMethod.POST})
 	public List<RunningDataModel> getRunningDataByCasesIdList(@RequestBody JSONObject caseIdList){
 		
-		
 		System.out.println(caseIdList.get("userId"));
 		System.out.println(caseIdList.get("caseIdList"));
 		System.out.println("controller层运行222正常222fff");

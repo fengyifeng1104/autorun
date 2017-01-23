@@ -4,9 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,8 @@ import com.ymatou.autorun.dataservice.model.RunningDataModel;
 public class RunningDataImpl implements RunningDataDao {
 	
 	
-	@Resource
+	@Autowired
+	@Qualifier("DataDriverJdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
 
 	@Override

@@ -23,47 +23,28 @@ public class RunningService {
 	@Resource
 	private RunningDataDao runningDataDao;
 	
-
-	
 	@Transactional
 	public List<RunningDataModel> getRunningDataByCasesIdList(JSONObject caseIdList){
-		
-		
 		System.out.println("controller层运行正常");
-		System.out.println(caseIdList.get("userId"));
-		System.out.println(caseIdList.get("caseIdList"));
 		System.out.println("service层运行正常");
-		
-		
-		
+
 		
 		List<RunningDataModel> rets = runningDataDao.getRunningDataByCasesIdList(caseIdList.getJSONArray("caseIdList"));
 		
-		
-		
 		for(RunningDataModel runningDataModel: rets){
-			
-			
 			GlobalData globalData = new GlobalData() {
 				@Override
 				public Map<String, String> getKeyVal() {
-					
 					return MapUtil.hashMap("userId", "3383");
 				}
 			};
 			
 			
-			
 			ImportData importData = new ImportDataFromMySQLImpl(runningDataModel);
 			
+			//run test case
 			CaseExecute.executeAndCheck(importData,globalData);
-			
-			
-			
-			
 		}
-		
-		
 		
 		
 		
