@@ -12,20 +12,24 @@ import com.ymatou.autorun.datadriver.execute.APICall;
 import com.ymatou.autorun.datadriver.execute.CaseExecuteFlow;
 import com.ymatou.autorun.datadriver.execute.helper.CaseExecute;
 import com.ymatou.autorun.datadriver.execute.helper.CaseExecuteService;
+import com.ymatou.autorun.datadriver.face.SqlSearch;
 
 
 public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 	
+	
+	private SqlSearch sqlSearch;
 	private ImportData importData;
 	private GlobalData globalData;
-	private AssertData assertData;
+	//private AssertData assertData;
 	
 	private Map<Integer,JSONObject> beforeApiRet = new HashMap<Integer,JSONObject>();
 	private JSONObject allRet = new JSONObject();
 	private APICall apiCall;
 	
 	
-	public CaseExecuteFlowImpl(ImportData importData,GlobalData globalData){
+	public CaseExecuteFlowImpl(SqlSearch sqlSearch,ImportData importData,GlobalData globalData){
+		this.sqlSearch = sqlSearch;
 		this.importData = importData;
 		this.globalData = globalData;
 	
@@ -54,7 +58,7 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 			for(Integer id: beforeCasesMap.keySet()){
 				ImportData beforeData = beforeCasesMap.get(id);
 				Logger.comment("before case Info - case id:["+ id +"], scenario:"+beforeData.getScenario()+", summary:"+beforeData.getScenarioSummary());
-				JSONObject beforeRet = CaseExecute.execute(beforeData,globalData);
+				JSONObject beforeRet = CaseExecute.execute(sqlSearch,beforeData,globalData);
 				ret.put(id, beforeRet);
 			}
 			Logger.comment("<<<<<<<<<<call before Apis End, ParentId:"+ importData.getCaseId() +">>>>>>>>>>");
@@ -69,8 +73,25 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 		try {
 			//get api class 
 			apiCall = CaseExecuteService.generateApiCallInstance(importData.getHost(),importData.getApi(),importData.getReqType());
-			apiCall.callAndGetReturnData(importData.getScenarioModel());
 			
+			
+			//1 replace 全局数据
+			JSONObject jsonModel = CaseExecuteService.updateModelWithGlobalData(importData.getScenarioModel(), globalData.getKeyVal());
+			
+			
+			//2 replace with 输入数据 和依赖数据
+			jsonModel = CaseExecuteService.updateModelWithData(sqlSearch,jsonModel,  importData.getModelUpdateMap(), beforeApiRet);
+			
+			
+			
+			
+			//4 call API and return data
+			JSONObject retJson = apiCall.callAndGetReturnData(jsonModel);
+			
+			//5 add before result
+			for(Integer id:beforeApiRet.keySet()){retJson.put(id.toString(),beforeApiRet.get(id));}
+			allRet = retJson;  
+			return retJson;
 			
 			
 			/*//1 replace 全局数据
@@ -94,7 +115,6 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 			allRet = retJson;
 			return retJson;*/
 			
-			return new JSONObject();
 
 		} catch (Exception e) {
 			Logger.fail(e);;

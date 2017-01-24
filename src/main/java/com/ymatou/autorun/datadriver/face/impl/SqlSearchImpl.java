@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.ymatou.autorun.DataSourceConfig;
+import com.ymatou.autorun.datadriver.data.conf.SqlDSconf;
 import com.ymatou.autorun.datadriver.face.SqlSearch;
 
 
@@ -31,19 +31,23 @@ public class SqlSearchImpl implements SqlSearch{
 	@Override
 	public List<Map<String, Object>> selectBy(String dataSourceName, String sqlStr) {
 		String ucaseStr = sqlStr.toUpperCase();
-		if (DataSourceConfig.IntegratedProductStr.equalsIgnoreCase(dataSourceName)){
+		if (SqlDSconf.IntegratedProductStr.equalsIgnoreCase(dataSourceName)){
 			return integratedproductJdbcTemplate.queryForList(ucaseStr);
 			
-		}else if (DataSourceConfig.YmtReleaseStr.equalsIgnoreCase(dataSourceName)) {
+		}else if (SqlDSconf.YmtReleaseStr.equalsIgnoreCase(dataSourceName)) {
 			return ymtreleaseJdbcTemplate.queryForList(ucaseStr);
 			
-		}else if (DataSourceConfig.AppProductReleaseStr.equals(dataSourceName)) {
+		}else if (SqlDSconf.AppProductReleaseStr.equals(dataSourceName)) {
 			return appProductReleaseJdbcTemplate.queryForList(ucaseStr);
 			
 		}else {
 			return integratedproductJdbcTemplate.queryForList(ucaseStr);
+			
 		}
 	}
+	
+	
+	
 	
 	
 /*	try {

@@ -1,7 +1,8 @@
-package com.ymatou.autorun;
+package com.ymatou.autorun.datadriver.data.conf;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,7 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 
 @Configuration
-public class DataSourceConfig {
+public class SqlDSconf {
 	
 	public final static String IntegratedProductStr = "integratedproduct";
 	public final static String YmtReleaseStr = "YmtRelease";

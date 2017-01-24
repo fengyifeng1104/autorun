@@ -1,16 +1,23 @@
 package com.ymatou.autorun.datadriver.data.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ymatou.autorun.datadriver.data.ImportData;
+import com.ymatou.autorun.dataservice.dao.RunningDataDao;
 import com.ymatou.autorun.dataservice.model.RunningDataModel;
 
 
+@Service
 public class ImportDataFromMySQLImpl  implements ImportData{
+	private RunningDataDao runningDataDao;
 	
 	
 	private int caseId;
@@ -32,7 +39,8 @@ public class ImportDataFromMySQLImpl  implements ImportData{
 		
 	}
 	
-	public ImportDataFromMySQLImpl(RunningDataModel runningDataModel){
+	public ImportDataFromMySQLImpl(RunningDataDao runningDataDao,RunningDataModel runningDataModel){
+		this.runningDataDao = runningDataDao;
 		initData(runningDataModel);
 	}
 	
@@ -49,12 +57,40 @@ public class ImportDataFromMySQLImpl  implements ImportData{
 			
 			scenarioModel = JSON.parseObject(ret.getTemplateDetail());
 		
-
-			
+			modelUpdateMap = StringToMap(ret.getExtraInputList());
 			
 			api = ret.getSceneApi();
+			
 			host = ret.getSceneHost();
+			
 			reqType = ret.getReqMethod();
+			
+			
+			for(String key : modelUpdateMap.keySet()){
+				Object V = modelUpdateMap.get(key);
+				if (V.toString().contains(".")){
+					String[] args = V.toString().split("\\.");
+					Integer beforeId = Integer.parseInt(args[0]);
+					String pathKey = args[1];
+					
+					//如果已存在该依赖id，直接添加依赖项
+					//否则新建id 依赖项list和获取依赖id的驱动数据
+					if (dependCaseIdsVal.keySet().contains(beforeId)){
+						dependCaseIdsVal.get(beforeId).add(pathKey);
+					}else{
+						List<String> keysList = new ArrayList<String>();
+						keysList.add(pathKey);
+						dependCaseIdsVal.put(beforeId, keysList);
+						
+						JSONArray jsonArray = new JSONArray();jsonArray.add(beforeId);
+						
+						RunningDataModel runmodel = this.runningDataDao.getRunningDataByCasesIdList(jsonArray).get(0);
+						ImportData beforeIdImportData = new ImportDataFromMySQLImpl(this.runningDataDao,runmodel);
+						dependCaseIds.put(beforeId,beforeIdImportData);
+					}
+					
+				}	
+			}
 			
 	
 		} catch (Exception e) {

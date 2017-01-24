@@ -1,18 +1,23 @@
 package com.ymatou.autorun.datadriver.execute.helper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.ymatou.autorun.datadriver.base.utils.AssertUtil;
 import com.ymatou.autorun.datadriver.base.utils.JsonBeanUtil;
 import com.ymatou.autorun.datadriver.base.utils.MapUtil;
 import com.ymatou.autorun.datadriver.base.utils.YMTDateUtil;
+import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
 import com.ymatou.autorun.datadriver.data.AssertData;
+import com.ymatou.autorun.datadriver.data.conf.SqlDSconf;
 import com.ymatou.autorun.datadriver.data.domain.DBCheckDataBean;
 import com.ymatou.autorun.datadriver.execute.APICall;
 import com.ymatou.autorun.datadriver.execute.impl.APICallImpl;
@@ -30,8 +35,37 @@ public class CaseExecuteService    {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Object getPreviousVal(Map<Integer, JSONObject> beforeApiRet, Integer beforeId,String pathKey) throws Exception{
-		return null;
+	public static Object getPreviousVal(SqlSearch sqlSearch,Map<Integer, JSONObject> beforeApiRet, Integer beforeId,String pathKey) throws Exception{
+		if (beforeApiRet.get(beforeId)==null){
+			throw new NullPointerException("before id ["+beforeId+"] is not exist.");
+		}
+		
+		Object ret = null;
+		JSONObject beforeRet = beforeApiRet.get(beforeId);
+		
+		
+		//set value which is not in return message
+		if (pathKey.contains("CatalogIds") && !beforeRet.containsKey("CatalogIds")){
+			List<Map<String, Object>> retMaps = sqlSearch.selectBy(SqlDSconf.IntegratedProductStr, "select * from Ymt_Catalogs where SProductId='"+beforeRet.getString("ProductID")+"'");
+			
+			JSONArray CatalogAry = new JSONArray();
+			for(Map<String, Object> retMap: retMaps){
+				CatalogAry.add(retMap.get("sCatalogId").toString());
+			}
+			beforeRet.put("CatalogIds",CatalogAry);
+		}
+		
+		//get value
+		if (JsonBeanUtil.isJsonBeanNodeExist(beforeRet, pathKey)){
+			ret = JsonBeanUtil.getJsonBeanNodeObj(beforeRet, pathKey);
+		}else{
+			Logger.comment("Before api id:"+ beforeId +" and return value:"+ beforeApiRet.get(beforeId).toString());
+			throw new NullPointerException("before id ["+beforeId+"] path of key ["+pathKey+"]is not exist.");
+		}
+		
+		
+		
+		return ret;
 		
 	}
 	
@@ -56,16 +90,19 @@ public class CaseExecuteService    {
 		return ret.deleteCharAt(ret.length()-1).toString();
 	}
 	
-	public static JSONObject updateModelWithData(JSONObject jsonModel,Map<String, String> updateDataMap,Map<Integer,JSONObject> beforeApiRet) throws Exception{
+	public static JSONObject updateModelWithData(SqlSearch sqlSearch,JSONObject jsonModel,Map<String, String> updateDataMap,Map<Integer,JSONObject> beforeApiRet) throws Exception{
 		if (updateDataMap!=null){
+			//逐个处理map里面的值
 			for(String K:updateDataMap.keySet()){
 			    String V = updateDataMap.get(K);
+			    
+			    //1 如果包含. 就说明是依赖前项的结果，然后去beforeResult中去捞
 				if (V.contains(".")){
 					String[] args1 = V.toString().split("\\.");
 					Integer beforeId = Integer.parseInt(args1[0]);
 					String pathKey = args1[1];
 					
-					Object previousVal = getPreviousVal(beforeApiRet,beforeId,pathKey);
+					Object previousVal = getPreviousVal(sqlSearch,beforeApiRet,beforeId,pathKey);
 					/*if (K.equals("cookies")){
 						//cookies:10007.cookies
 						Logger.debug("Cookies:" + previousVal.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", ""));
@@ -77,11 +114,13 @@ public class CaseExecuteService    {
 					JsonBeanUtil.updateJsonBean(jsonModel, K,previousVal);
 				}else{
 					//for date  -  productEndTime:#(d,10);
+					//如果包含# 就是说说明依赖时间
 					if (V.contains("#")){
 						String[] vString = V.replaceAll("\\#", "").replaceAll("\\(", "").replaceAll("\\)", "").split(",");
 						JsonBeanUtil.updateJsonBean(jsonModel,K,YMTDateUtil.getBeforeOrNextDay(Integer.parseInt(vString[1])));
 						
 					}else{
+						//默认updateMap
 						JsonBeanUtil.updateJsonBean(jsonModel, K, V);
 					}
 				}
