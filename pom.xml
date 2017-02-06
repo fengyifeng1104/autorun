@@ -115,6 +115,15 @@
 	    <artifactId>spring-boot-starter-data-mongodb</artifactId>
 	</dependency>
 
+
+	<!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
+	<dependency>
+	    <groupId>commons-collections</groupId>
+	    <artifactId>commons-collections</artifactId>
+	    <version>3.2.1</version>
+	</dependency>
+
+
   </dependencies>
   
    <build>

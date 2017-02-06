@@ -8,6 +8,7 @@ import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
 import com.ymatou.autorun.datadriver.data.AssertData;
 import com.ymatou.autorun.datadriver.data.GlobalData;
 import com.ymatou.autorun.datadriver.data.ImportData;
+import com.ymatou.autorun.datadriver.data.impl.AssertDataImpl;
 import com.ymatou.autorun.datadriver.execute.APICall;
 import com.ymatou.autorun.datadriver.execute.CaseExecuteFlow;
 import com.ymatou.autorun.datadriver.execute.helper.CaseExecute;
@@ -21,7 +22,7 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 	private SqlSearch sqlSearch;
 	private ImportData importData;
 	private GlobalData globalData;
-	//private AssertData assertData;
+	private AssertData assertData;
 	
 	private Map<Integer,JSONObject> beforeApiRet = new HashMap<Integer,JSONObject>();
 	private JSONObject allRet = new JSONObject();
@@ -37,7 +38,7 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 
 
 	public void beforeCall() {
-		Logger.createResultFile(importData.getCaseSummary());
+		Logger.createResultFile(importData.getHost(),importData.getCaseSummary());
 		Logger.comment("=================Start Case id:["+ importData.getCaseId() +"], case summary:"+importData.getCaseSummary());
 
 	}
@@ -69,7 +70,7 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 
 
 	public JSONObject callApi() {
-		Logger.start(true, importData.getCaseSummary());
+		Logger.start(true,importData.getCaseId(), importData.getCaseSummary());
 		try {
 			//get api class 
 			apiCall = CaseExecuteService.generateApiCallInstance(importData.getHost(),importData.getApi(),importData.getReqType());
@@ -128,6 +129,19 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 
 
 	public void userDefinedCheck() {
+		assertData = new AssertDataImpl(importData.getCaseAssert());
+		try {
+			CaseExecuteService.checkSqlDB(sqlSearch,beforeApiRet,assertData.getSqlCheckList());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			Logger.fail(e);
+		}
+		
+		
+		//todo mongo and return data check 
+		//CaseExecuteService.checkMongoDB(allRet,assertData.getMongoCheckList());
+		//CaseExecuteService.checkReturnData(allRet,assertData.getReturnDataCheckMap());
+		
 	}
 
 

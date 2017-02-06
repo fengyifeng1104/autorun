@@ -13,6 +13,8 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.XMLWriter;
 
+import com.ymatou.autorun.datadriver.base.utils.FileUtil;
+
 /************************************************************************************
  * 用于处理日志
  * 
@@ -109,47 +111,34 @@ public class Logger {
      * 
      * @param description 该日志对应描述，此参数暂时没有作用
      */
-    public static void createResultFile(String description) {
+    public static void createResultFile(String folderName,String suiteName) {
         threadLocal.set(new HashMap<String, Object>());
-        String allsuitename = getTestsuiteName();
-        String suitename = allsuitename.substring(allsuitename.lastIndexOf(".") + 1);
-        String folder = "";
-        String[] tempfolder = allsuitename.substring(0, allsuitename.lastIndexOf(".")).split("\\.");
-        // 目录是反向包名
-        for (String tf : tempfolder) {
-            folder = tf + "." + folder;
-        }
-        // 去掉最后一个.
-        folder = folder.substring(0, folder.length() - 1);
-        // 去掉第一个.
-        folder = folder.substring(folder.indexOf('.') + 1);
-        try {
-            File filef = new File("./Results/" + folder + "/");
-            if (!filef.exists() && !filef.isDirectory()) {
-                filef.mkdir();
-            }
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
         Document doc = DocumentHelper.createDocument();
         // 将Document 对象跟当前线程绑定
         buildDocument(doc);
         Element testsuite = getDocument().addElement("Testsuite");
         // 将 Element testsuite 对象跟当前线程绑定
         buildElementTestsuite(testsuite);
-        getElementTestsuite().addAttribute("description", description);
+        //getElementTestsuite().addAttribute("description", description);
         try {
+        	
         	System.out.println(System.getProperty("user.dir"));
-            XMLWriter writer =
+        	FileUtil.createFolderIfNotExist("./Results/" + folderName);
+        	XMLWriter writer =
+                     new XMLWriter(new OutputStreamWriter(new FileOutputStream("./Results/" + folderName + "/" + suiteName
+                             + ".xml"), "UTF-8"));
+        	
+        	
+           /* XMLWriter writer =
                     new XMLWriter(new OutputStreamWriter(new FileOutputStream("./Results/" + folder + "/" + suitename
-                            + ".xml"), "UTF-8"));
+                            + ".xml"), "UTF-8"));*/
             // 将Document 对象跟当前线程绑定
             buildXMLWriter(writer);
         } catch (Exception e) {
             e.printStackTrace();
         }
         debug(getTestsuiteName() + " " + getTestName());
-        debug(description);
+       // debug(description);
     }
 
     /**
@@ -191,10 +180,12 @@ public class Logger {
      * @param description Testcase描述
      * 
      */
-    public static void start(boolean type, String description) {
+    public static void start(boolean type, Integer caseId,String description) {
         flag = true;
         message = "";
-        String testname = getTestName();
+        
+        //testname 就是testid
+        String testname = String.valueOf(caseId);
         Element test = getElementTestsuite().addElement("Testcase");
         // 将 Element test 对象跟当前线程绑定
         buildElementTest(test);

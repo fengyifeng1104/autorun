@@ -4,17 +4,17 @@ package com.ymatou.autorun.datadriver.data;
 import java.util.List;
 import java.util.Map;
 
-import com.ymatou.autorun.datadriver.data.domain.DBCheckDataBean;
+import com.ymatou.autorun.datadriver.data.domain.CheckDBDataBean;
 
 public interface AssertData {
-	public String key_Param = "param";
+	public String key_Param = "returndata";
 	public String key_Sql= "sql";
 	public String key_Mongo = "mongo";
 	
-	public String sqlClassPath = "com.ymttest.database.sqlwapper";
+	public String SqlStr_Param_Regex = "\\$\\{.*?\\}";
 	
-	public Map<String, Object> getParamMap();
-	public List<DBCheckDataBean> getSqlCheckList();
-	public List<DBCheckDataBean> getMongoCheckList() ;
+	public Map<String, Object> getReturnDataCheckMap();
+	public List<CheckDBDataBean> getSqlCheckList();
+	public List<CheckDBDataBean> getMongoCheckList() ;
 	
 }

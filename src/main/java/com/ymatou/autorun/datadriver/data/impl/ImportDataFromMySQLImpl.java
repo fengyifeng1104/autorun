@@ -59,6 +59,8 @@ public class ImportDataFromMySQLImpl  implements ImportData{
 		
 			modelUpdateMap = StringToMap(ret.getExtraInputList());
 			
+			caseAssert = StringToMap(ret.getExtraCheckList(),"#");
+			
 			api = ret.getSceneApi();
 			
 			host = ret.getSceneHost();
@@ -214,23 +216,32 @@ public class ImportDataFromMySQLImpl  implements ImportData{
 	 * @return
 	 */
 	private Map<String, String> StringToMap(String s){
+		return StringToMap(s,"=");
+	}
+
+
+
+	
+	private Map<String, String> StringToMap(String s,String splitLR){
+		return StringToMap(s,";",splitLR);
+	}
+	
+	
+	private Map<String, String> StringToMap(String s,String splitRecord,String splitLR){
 		Map<String, String> map  =new HashMap<String,String>();
 		if (s!=null){
-			String[] pair  = s.split(";");
+			String[] pair  = s.split(splitRecord);
 			if (pair.length>0 && pair[0].length()>0){
 				for (int i=0;i<pair.length;i++){
-					String[] keyval = pair[i].split("=");
+					String[] keyval = pair[i].split(splitLR);
 					map.put(keyval[0].trim(), keyval[1].trim());
 				}
 			}
 		}
 		return map;
 	}
-
-
-
 	
-	
+
 	
 	
 	

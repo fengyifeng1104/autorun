@@ -1,16 +1,16 @@
 package com.ymatou.autorun.datadriver.execute.helper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.ymatou.autorun.datadriver.base.utils.AssertUtil;
 import com.ymatou.autorun.datadriver.base.utils.JsonBeanUtil;
 import com.ymatou.autorun.datadriver.base.utils.MapUtil;
@@ -18,7 +18,7 @@ import com.ymatou.autorun.datadriver.base.utils.YMTDateUtil;
 import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
 import com.ymatou.autorun.datadriver.data.AssertData;
 import com.ymatou.autorun.datadriver.data.conf.SqlDSconf;
-import com.ymatou.autorun.datadriver.data.domain.DBCheckDataBean;
+import com.ymatou.autorun.datadriver.data.domain.CheckDBDataBean;
 import com.ymatou.autorun.datadriver.execute.APICall;
 import com.ymatou.autorun.datadriver.execute.impl.APICallImpl;
 import com.ymatou.autorun.datadriver.face.SqlSearch;
@@ -136,48 +136,58 @@ public class CaseExecuteService    {
 
 	}
 
-	public static void checkUserDefined(AssertData assertData){
-		Map<String, Object> paramMap = assertData.getParamMap();
-		List<DBCheckDataBean> sqlList = assertData.getSqlCheckList();
-		List<DBCheckDataBean> mongoList = assertData.getMongoCheckList();
-		
-		for(DBCheckDataBean sqlCheckBean:sqlList){
-			 String tableName = sqlCheckBean.getTableName();
-			 Map<String, Object> searchMap = sqlCheckBean.getSearchMap();
-			 
-			 //param 替换 搜索map中的值
-			 for(String searchKey:searchMap.keySet()){
-				 if (paramMap.containsKey(searchMap.get(searchKey).toString())){
-					 searchMap.put(searchKey, paramMap.get(searchMap.get(searchKey).toString()));
-				 }
-			 }
-			 
-			 Map<String, Object> assertMap = sqlCheckBean.getAssertMap();
-			 String dbName = AssertData.sqlClassPath +"."+tableName+"Wapper";
-			 try {
-				SqlSearch sqlsearch = (SqlSearch)Class.forName(dbName).newInstance();
-				Map<String, Object> tgtMap =new HashMap<String, Object>();;
-				for(String key:assertMap.keySet()){
-					if (tgtMap.containsKey(key)){
-					AssertUtil.assertResultEqual(MapUtil.hashMap(key, assertMap.get(key)), MapUtil.hashMap(key, tgtMap.get(key)));
-					}else{
-						System.out.println("error");
-						//Logger.verifyEquals(false, true, "key:["+key+"] is not in sql result, table is "+ tableName);
-					}
-				}
-
+	
+	
+	
+	public static void checkSqlDB(SqlSearch sqlSearch,Map<Integer, JSONObject> beforeApiRet,List<CheckDBDataBean> sqlList) throws Exception{
+		for(CheckDBDataBean sqlCheckBean: sqlList){
+			String dbName = sqlCheckBean.getDBName();
+			String sqlStr = sqlCheckBean.getSqlStr();
+			Integer orderNum = sqlCheckBean.getOrderNum();
+			JSONObject assertMapJson = sqlCheckBean.getAssertMap();
 			
-			 } catch (InstantiationException e) {
-				e.printStackTrace();
-			 } catch (IllegalAccessException e) {
-				e.printStackTrace();
-			 } catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			 }
+			//handle sql string 
+			String regex = AssertData.SqlStr_Param_Regex;
+			
+			Matcher matcher = Pattern.compile(regex).matcher(sqlStr);
+			
+			while (matcher.find()){
+				Logger.debug("Sql 参数："+ matcher.group(0));
+				String replaceKey = matcher.group(0).replaceAll("\\$", "").replaceAll("\\{", "").replaceAll("\\}", "");
+				
+				String[] args1 = replaceKey.toString().split("\\.");
+				Integer beforeId = Integer.parseInt(args1[0]);
+				String pathKey = args1[1];
+				
+				Object previousVal = getPreviousVal(sqlSearch,beforeApiRet,beforeId,pathKey);
+				
+				
+				sqlStr = sqlStr.replace(matcher.group(0), previousVal.toString());
+			}
+			
+			
+			
+			List<Map<String,Object>> sqlRetList = sqlSearch.selectBy(dbName,sqlStr);
+			
+			if (sqlRetList.size()<=orderNum){
+				throw new ArrayIndexOutOfBoundsException("");
+			}
+			
+			
+			
+			Map<String,Object> sqlRet = new CaseInsensitiveMap(sqlRetList.get(orderNum));
+			
+			for(String key:assertMapJson.keySet()){
+				if (sqlRet.containsKey(key)){
+					AssertUtil.assertResultEqual(MapUtil.hashMap(key, assertMapJson.get(key)), MapUtil.hashMap(key, sqlRet.get(key)));
+				}else{
+					Logger.verifyEquals(false, true, "key:["+key+"] is not in sql result, Sql:" + sqlStr);
+				}
+			}
+			
+			
 			
 		}
-		
-	
 		
 	}
 
