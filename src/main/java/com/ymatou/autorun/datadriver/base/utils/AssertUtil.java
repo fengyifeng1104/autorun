@@ -283,10 +283,7 @@ public class AssertUtil {
 	  }
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(isNumeric("1,0"));
-	}
-	
+
 	
 	
 }

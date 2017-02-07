@@ -1,6 +1,5 @@
 package com.ymatou.autorun.datadriver.base.ymttf.tool;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
@@ -12,6 +11,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.XMLWriter;
+import org.junit.Assert;
 
 import com.ymatou.autorun.datadriver.base.utils.FileUtil;
 
@@ -225,7 +225,7 @@ public class Logger {
      */
     public static void end() {
         if (!flag) {
-            org.junit.Assert.fail(message);
+            Assert.fail(message);
             debug(message);
         }
 
@@ -249,7 +249,7 @@ public class Logger {
         getElementTest().setAttributeValue("result", "1");
         debug("Error:" + exmsg.toString() + "+++++ExceptionMsg:"
                 + exception.getMessage());
-        org.junit.Assert.fail();
+        Assert.fail();
     }
 
     /**

@@ -49,9 +49,5 @@ public class GetFileCall extends YmatouBaseCall {
 		return file;
 	}
 
-	public static void main(String args[]) {
-		GetFileCall gf = new GetFileCall("http://172.16.100.64/group1/M00/00/01/rBBkQFWQ5KGAYTGuAAG-FrACLIY597.jpg");
-		gf.callService();
-		Logger.debug(gf.getFile());
-	}
+	
 }

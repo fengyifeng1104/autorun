@@ -219,11 +219,4 @@ public class JsonBeanUtil {
 	}
 
 
-	
-	public static void main(String[] args) {
-		String ss = "sss[d]";
-		System.out.println(ss.replaceAll("\\[.*\\]", ""));
-		
-	}
-
 }

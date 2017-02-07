@@ -13,8 +13,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.ymatou.autorun.datadriver.base.ymttf.tool.FormatUtil;
 import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
 
-import junit.extensions.TestDecorator;
-
 
 
 /************************************************************************************

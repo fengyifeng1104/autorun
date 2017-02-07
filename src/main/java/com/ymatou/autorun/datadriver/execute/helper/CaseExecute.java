@@ -50,7 +50,7 @@ public class CaseExecute    {
 
 	
 	
-	
+/*	
 	
 	
 	public static void main(String[] args) throws Exception {
@@ -60,16 +60,16 @@ public class CaseExecute    {
 		
 	    File file = new File(System.getProperty("user.dir")+"\\resource\\TestData.xls");
    	
-/*
+
 		//data for MySql
 		GlobalData globalData = new GlobalDataFromExcelImpl(file, 1);
 		ImportData importData = new ImportDataFromDBImpl(10004);
-		executeAndCheck(importData,globalData);*/
+		executeAndCheck(importData,globalData);
 
 
 		
 		
-	}
+	}*/
 		
 
 		

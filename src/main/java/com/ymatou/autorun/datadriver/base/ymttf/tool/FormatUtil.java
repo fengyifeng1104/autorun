@@ -445,8 +445,8 @@ public class FormatUtil {
 		return finds;
 	}
 
-	public static void main(String args[]) {
+/*	public static void main(String args[]) {
 		
 
-	}
+	}*/
 }

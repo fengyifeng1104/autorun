@@ -94,11 +94,6 @@ public class MapUtil {
     }
     
     
-    
-	
-	public static void main(String[] args) {
-		hashMap("a","b","c",1);
 
-	}
 	
 }

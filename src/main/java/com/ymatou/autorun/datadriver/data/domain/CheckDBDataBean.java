@@ -45,18 +45,18 @@ public class CheckDBDataBean {
 
 
 
-	public static void main(String[] args) {
-	/*	String str = "Catalogs(scatalogId#CatalogId)";
+/*	public static void main(String[] args) {
+		String str = "Catalogs(scatalogId#CatalogId)";
 		String regex = "\\(.*?\\)";
 		Matcher matcher = Pattern.compile(regex).matcher(str);
 		if(matcher.find()){
 			System.out.println(matcher.group(0));
-		}*/
+		}
 		
 		String aString = "{inum=20,iaction=0}";
 		JSONObject aJsonObject= JSON.parseObject(aString.replace("=", ":"));
 		int a =1;
 		int c=a;
-	}
+	}*/
 	
 }
