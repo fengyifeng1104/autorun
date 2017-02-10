@@ -1,7 +1,5 @@
 package com.ymatou.autorun.datadriver.execute.helper;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
@@ -48,7 +46,23 @@ public class CaseExecute    {
 	}
 	
 
-	
+	/***
+	 * 当做postman来使用
+	 * @param runningDataDao
+	 * @param sqlSearch
+	 * @param runningDataModel
+	 * @return
+	 */
+	public static JSONObject executeAsPostMan(RunningDataDao runningDataDao,SqlSearch sqlSearch,RunningDataModel runningDataModel){
+		ImportData importData = new ImportDataFromMySQLImpl(runningDataDao,runningDataModel);
+		GlobalData globalData = new GlobalDataFromProImpl();
+		CaseExecuteFlow caseExecuteFlow = new CaseExecuteFlowImpl(sqlSearch,importData,globalData);
+		caseExecuteFlow.beforeCall();
+		caseExecuteFlow.callbeforeApis();
+		JSONObject ret = caseExecuteFlow.callApi();
+		caseExecuteFlow.afterCall(); 
+		return ret;
+	}
 	
 /*	
 	

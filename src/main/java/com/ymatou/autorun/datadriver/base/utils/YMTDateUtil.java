@@ -196,6 +196,15 @@ public class YMTDateUtil {
 		return addMinutes(calendar,n, format);
 	}
 
+	public static String getBeforeOrNextMinute(String dateStr, int n) {
+		String strSysTime = "";
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(parseYMDHMSDate(dateStr));
+		calendar.add(Calendar.MINUTE, n);
+		strSysTime = new SimpleDateFormat(YMDHMS).format(calendar.getTime());
+		return strSysTime;
+	}
+	
 	/**
 	 * 获取和指定时间差n天的时间, 格式yyyy-MM-dd HH:mm:ss
 	 * 
@@ -335,6 +344,16 @@ public class YMTDateUtil {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.SECOND, n);
 		return calendar.getTime();
+	}
+	
+	
+	public static String getDateBeforeOrNextSecond(String dateStr, int n) {
+		String strSysTime = "";
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(parseYMDHMSDate(dateStr));
+		calendar.add(Calendar.SECOND, n);
+		strSysTime = new SimpleDateFormat(YMDHMS).format(calendar.getTime());
+		return strSysTime;
 	}
 	
 	/**

@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.ymatou.autorun.datadriver.base.utils.AssertUtil;
@@ -17,7 +16,6 @@ import com.ymatou.autorun.datadriver.base.utils.MapUtil;
 import com.ymatou.autorun.datadriver.base.utils.YMTDateUtil;
 import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
 import com.ymatou.autorun.datadriver.data.AssertData;
-import com.ymatou.autorun.datadriver.data.conf.SqlDSconf;
 import com.ymatou.autorun.datadriver.data.domain.CheckDBDataBean;
 import com.ymatou.autorun.datadriver.execute.APICall;
 import com.ymatou.autorun.datadriver.execute.impl.APICallImpl;
@@ -35,7 +33,7 @@ public class CaseExecuteService    {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Object getPreviousVal(SqlSearch sqlSearch,Map<Integer, JSONObject> beforeApiRet, Integer beforeId,String pathKey) throws Exception{
+/*	public static Object getPreviousVal(SqlSearch sqlSearch,Map<Integer, JSONObject> beforeApiRet, Integer beforeId,String pathKey) throws Exception{
 		if (beforeApiRet.get(beforeId)==null){
 			throw new NullPointerException("before id ["+beforeId+"] is not exist.");
 		}
@@ -67,7 +65,7 @@ public class CaseExecuteService    {
 		
 		return ret;
 		
-	}
+	}*/
 	
 	public static JSONObject updateModelWithGlobalData(JSONObject jsonModel,Map<String, String> globalDataMap) throws JSONException{
 		String strModel = jsonModel.toString();
@@ -102,15 +100,7 @@ public class CaseExecuteService    {
 					Integer beforeId = Integer.parseInt(args1[0]);
 					String pathKey = args1[1];
 					
-					Object previousVal = getPreviousVal(sqlSearch,beforeApiRet,beforeId,pathKey);
-					/*if (K.equals("cookies")){
-						//cookies:10007.cookies
-						Logger.debug("Cookies:" + previousVal.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", ""));
-						apiCall.setCookies(previousVal.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", ""));
-					}else{
-						
-					}*/
-					
+					Object previousVal = DataValHandle.processPreviousVal(sqlSearch,beforeApiRet,beforeId,pathKey);
 					JsonBeanUtil.updateJsonBean(jsonModel, K,previousVal);
 				}else{
 					//for date  -  productEndTime:#(d,10);
@@ -159,7 +149,7 @@ public class CaseExecuteService    {
 				Integer beforeId = Integer.parseInt(args1[0]);
 				String pathKey = args1[1];
 				
-				Object previousVal = getPreviousVal(sqlSearch,beforeApiRet,beforeId,pathKey);
+				Object previousVal = DataValHandle.processPreviousVal(sqlSearch,beforeApiRet,beforeId,pathKey);
 				
 				
 				sqlStr = sqlStr.replace(matcher.group(0), previousVal.toString());

@@ -111,7 +111,7 @@ public class Logger {
      * 
      * @param description 该日志对应描述，此参数暂时没有作用
      */
-    public static void createResultFile(String folderName,String suiteName) {
+    public static void createResultFile(String folderName,String subFolderName,String suiteName) {
         threadLocal.set(new HashMap<String, Object>());
         Document doc = DocumentHelper.createDocument();
         // 将Document 对象跟当前线程绑定
@@ -119,13 +119,14 @@ public class Logger {
         Element testsuite = getDocument().addElement("Testsuite");
         // 将 Element testsuite 对象跟当前线程绑定
         buildElementTestsuite(testsuite);
-        //getElementTestsuite().addAttribute("description", description);
+        getElementTestsuite().addAttribute("description", "data driver");
         try {
         	
         	System.out.println(System.getProperty("user.dir"));
         	FileUtil.createFolderIfNotExist("./Results/" + folderName);
+        	FileUtil.createFolderIfNotExist("./Results/" + folderName + "/"+subFolderName);
         	XMLWriter writer =
-                     new XMLWriter(new OutputStreamWriter(new FileOutputStream("./Results/" + folderName + "/" + suiteName
+                     new XMLWriter(new OutputStreamWriter(new FileOutputStream("./Results/" + folderName + "/"+ subFolderName+"/" + suiteName
                              + ".xml"), "UTF-8"));
         	
         	

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ymatou.autorun.dataservice.model.RunResultDataModel;
 import com.ymatou.autorun.dataservice.model.RunningDataModel;
 import com.ymatou.autorun.dataservice.service.RunningService;
 
@@ -24,10 +25,22 @@ public class RunningController {
 		
 		System.out.println(caseIdList.get("userId"));
 		System.out.println(caseIdList.get("caseIdList"));
-		System.out.println("controller层运行222正常222fff");
-		System.out.println("controller层运行正常ssssssss");
 
 		return runningService.getRunningDataByCasesIdList(caseIdList);
 	}
+	
+	
+	
+	
+	//for postman
+	@RequestMapping(value="/getRunningDataByCasesId",method={RequestMethod.POST})
+	public RunResultDataModel getRunningDataByCasesId(@RequestBody JSONObject requestJson){
+		
+		System.out.println(requestJson.get("userId"));
+		System.out.println(requestJson.get("caseId"));
+
+		return runningService.getRunningDataByCasesId(requestJson);
+	}
+
 
 }

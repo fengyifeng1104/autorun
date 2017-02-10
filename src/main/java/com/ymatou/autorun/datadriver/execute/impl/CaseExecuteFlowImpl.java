@@ -38,7 +38,8 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 
 
 	public void beforeCall() {
-		Logger.createResultFile(importData.getHost(),importData.getCaseSummary());
+		String subfolderName = importData.getApi().toLowerCase().replace("/", "");
+		Logger.createResultFile(importData.getHost(),subfolderName,importData.getCaseSummary());
 		Logger.comment("=================Start Case id:["+ importData.getCaseId() +"], case summary:"+importData.getCaseSummary());
 
 	}
