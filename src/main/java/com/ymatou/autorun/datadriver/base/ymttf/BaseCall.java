@@ -10,8 +10,9 @@ import org.apache.http.client.ClientProtocolException;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.ymatou.autorun.datadriver.base.ymttf.tool.FormatUtil;
-import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
+import com.ymatou.autorun.datadriver.base.utils.FormatUtil;
+import com.ymatou.autorun.datadriver.base.utils.Logger;
+
 
 
 /************************************************************************************

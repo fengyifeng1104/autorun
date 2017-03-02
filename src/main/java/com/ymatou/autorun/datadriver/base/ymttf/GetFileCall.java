@@ -1,7 +1,6 @@
 package com.ymatou.autorun.datadriver.base.ymttf;
 
-import com.ymatou.autorun.datadriver.base.ymttf.tool.FormatUtil;
-import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
+import com.ymatou.autorun.datadriver.base.utils.FormatUtil;
 
 /************************************************************************************
  * @File name :GetFileCall.java

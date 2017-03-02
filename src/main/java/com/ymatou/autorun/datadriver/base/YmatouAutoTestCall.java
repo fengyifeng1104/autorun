@@ -10,9 +10,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Joiner;
 import com.ymatou.autorun.datadriver.base.utils.JsonBeanUtil;
+import com.ymatou.autorun.datadriver.base.utils.Logger;
 import com.ymatou.autorun.datadriver.base.ymttf.YmatouBaseCall;
-import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
-
 
 public class YmatouAutoTestCall extends YmatouBaseCall{
 	

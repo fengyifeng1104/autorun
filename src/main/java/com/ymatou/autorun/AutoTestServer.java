@@ -17,25 +17,21 @@ import com.ymatou.autorun.datadriver.data.impl.GlobalDataBean;
  *
  */
 @SpringBootApplication
+@EnableConfigurationProperties({AppRunConf.class})  
 public class AutoTestServer   
 {
 	@Bean
 	public HttpMessageConverters fastJsonHttpMessageConverters() {	
-	FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
-	FastJsonConfig fastJsonConfig = new FastJsonConfig();
-	fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-	fastConverter.setFastJsonConfig(fastJsonConfig);
-	HttpMessageConverter<?> converter = fastConverter;
-	return new HttpMessageConverters(converter);
-	    }
+		FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+		FastJsonConfig fastJsonConfig = new FastJsonConfig();
+		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+		fastConverter.setFastJsonConfig(fastJsonConfig);
+		HttpMessageConverter<?> converter = fastConverter;
+		return new HttpMessageConverters(converter);
+   }
 	
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello run!" );
-        System.out.println( "Hello run!" );
+    public static void main( String[] args ){
         SpringApplication.run(AutoTestServer.class, args);
-        
-        
     }
     
 }

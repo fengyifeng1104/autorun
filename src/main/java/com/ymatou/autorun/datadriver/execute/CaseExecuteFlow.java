@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 
 public interface CaseExecuteFlow     {
 	
-	public void beforeCall();
+	public void beforeCall(String resultfolerName);
 	
 	public Map<Integer,JSONObject> callbeforeApis(); 
 	

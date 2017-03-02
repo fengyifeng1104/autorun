@@ -15,6 +15,7 @@ public class YMTDateUtil {
 	public static final String YMD = "yyyy-MM-dd";
 	public static final String YMDHMSS = "yyyy-MM-dd HH:mm:ss.SSS";
 	public static final String YMDTHMS_STRING="yyyy-MM-dd'T'HH:mm:ss";
+	public static final String FILE_DATE_STRING="yyyy_MM_dd_HH_mm_ss_SSS";
 	
 
 	public static SimpleDateFormat getYMDHMSFormat() {

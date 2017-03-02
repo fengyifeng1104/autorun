@@ -22,23 +22,12 @@ public class RunningController {
 	
 	@RequestMapping(value="/getRunningDataByCasesIdList",method={RequestMethod.POST})
 	public List<RunningDataModel> getRunningDataByCasesIdList(@RequestBody JSONObject caseIdList){
-		
-		System.out.println(caseIdList.get("userId"));
-		System.out.println(caseIdList.get("caseIdList"));
-
 		return runningService.getRunningDataByCasesIdList(caseIdList);
 	}
-	
-	
-	
 	
 	//for postman
 	@RequestMapping(value="/getRunningDataByCasesId",method={RequestMethod.POST})
 	public RunResultDataModel getRunningDataByCasesId(@RequestBody JSONObject requestJson){
-		
-		System.out.println(requestJson.get("userId"));
-		System.out.println(requestJson.get("caseId"));
-
 		return runningService.getRunningDataByCasesId(requestJson);
 	}
 

@@ -1,8 +1,11 @@
 package com.ymatou.autorun.datadriver.execute.helper;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ymatou.autorun.datadriver.base.utils.YMTDateUtil;
 import com.ymatou.autorun.datadriver.data.GlobalData;
 import com.ymatou.autorun.datadriver.data.ImportData;
 import com.ymatou.autorun.datadriver.data.impl.GlobalDataFromProImpl;
@@ -15,18 +18,23 @@ import com.ymatou.autorun.dataservice.model.RunningDataModel;
 
 public class CaseExecute    {
 	
-	public static void executeAndCheck(RunningDataDao runningDataDao,SqlSearch sqlSearch,List<RunningDataModel> runningDataModelList){
+	public static String executeAndCheck(RunningDataDao runningDataDao,SqlSearch sqlSearch,List<RunningDataModel> runningDataModelList){
+		Calendar calendar = Calendar.getInstance();
+		String strSysTime = new SimpleDateFormat(YMTDateUtil.FILE_DATE_STRING).format(calendar.getTime()); 
+		
 		for(RunningDataModel runningDataModel:runningDataModelList ){
 			ImportData importData = new ImportDataFromMySQLImpl(runningDataDao,runningDataModel);
 			GlobalData globalData = new GlobalDataFromProImpl();
-			executeAndCheck(sqlSearch,importData,globalData);
+			executeAndCheck(sqlSearch,importData,globalData,strSysTime);
 		}
+		
+		return strSysTime;
 	}
 	
 	
-	public static void executeAndCheck(SqlSearch sqlSearch,ImportData importData,GlobalData globalData) {
+	public static void executeAndCheck(SqlSearch sqlSearch,ImportData importData,GlobalData globalData,String strSysTime) {
 		CaseExecuteFlow caseExecuteFlow = new CaseExecuteFlowImpl(sqlSearch,importData,globalData);
-		caseExecuteFlow.beforeCall();
+		caseExecuteFlow.beforeCall(strSysTime);
 		caseExecuteFlow.callbeforeApis();
 		caseExecuteFlow.callApi();
 		caseExecuteFlow.commonCheck();
@@ -54,10 +62,13 @@ public class CaseExecute    {
 	 * @return
 	 */
 	public static JSONObject executeAsPostMan(RunningDataDao runningDataDao,SqlSearch sqlSearch,RunningDataModel runningDataModel){
+		Calendar calendar = Calendar.getInstance();
+		String strSysTime = new SimpleDateFormat(YMTDateUtil.FILE_DATE_STRING).format(calendar.getTime()); 
+		
 		ImportData importData = new ImportDataFromMySQLImpl(runningDataDao,runningDataModel);
 		GlobalData globalData = new GlobalDataFromProImpl();
 		CaseExecuteFlow caseExecuteFlow = new CaseExecuteFlowImpl(sqlSearch,importData,globalData);
-		caseExecuteFlow.beforeCall();
+		caseExecuteFlow.beforeCall(strSysTime);
 		caseExecuteFlow.callbeforeApis();
 		JSONObject ret = caseExecuteFlow.callApi();
 		caseExecuteFlow.afterCall(); 

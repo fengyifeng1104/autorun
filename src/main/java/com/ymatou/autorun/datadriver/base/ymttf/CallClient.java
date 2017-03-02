@@ -31,7 +31,7 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HTTP;
 
-import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
+import com.ymatou.autorun.datadriver.base.utils.Logger;
 
 import org.apache.http.params.HttpParams;
 

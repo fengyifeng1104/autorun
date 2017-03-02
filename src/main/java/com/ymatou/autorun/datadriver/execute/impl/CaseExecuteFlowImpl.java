@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
-import com.ymatou.autorun.datadriver.base.ymttf.tool.Logger;
+import com.ymatou.autorun.datadriver.base.utils.Logger;
 import com.ymatou.autorun.datadriver.data.AssertData;
 import com.ymatou.autorun.datadriver.data.GlobalData;
 import com.ymatou.autorun.datadriver.data.ImportData;
@@ -37,9 +37,9 @@ public class CaseExecuteFlowImpl implements CaseExecuteFlow{
 	}
 
 
-	public void beforeCall() {
+	public void beforeCall(String resultFolderName) {
 		String subfolderName = importData.getApi().toLowerCase().replace("/", "");
-		Logger.createResultFile(importData.getHost(),subfolderName,importData.getCaseSummary());
+		Logger.createResultFile(resultFolderName,importData.getHost(),subfolderName,importData.getCaseSummary());
 		Logger.comment("=================Start Case id:["+ importData.getCaseId() +"], case summary:"+importData.getCaseSummary());
 
 	}
