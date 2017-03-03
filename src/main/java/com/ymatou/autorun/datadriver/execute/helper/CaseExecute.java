@@ -18,15 +18,18 @@ import com.ymatou.autorun.dataservice.model.RunningDataModel;
 
 public class CaseExecute    {
 	
-	public static String executeAndCheck(RunningDataDao runningDataDao,SqlSearch sqlSearch,List<RunningDataModel> runningDataModelList){
+	public static String executeAndCheck(RunningDataDao runningDataDao,SqlSearch sqlSearch,List<List<RunningDataModel>> runningDataModelListSet){
 		Calendar calendar = Calendar.getInstance();
 		String strSysTime = new SimpleDateFormat(YMTDateUtil.FILE_DATE_STRING).format(calendar.getTime()); 
 		
-		for(RunningDataModel runningDataModel:runningDataModelList ){
-			ImportData importData = new ImportDataFromMySQLImpl(runningDataDao,runningDataModel);
-			GlobalData globalData = new GlobalDataFromProImpl();
-			executeAndCheck(sqlSearch,importData,globalData,strSysTime);
-		}
+		runningDataModelListSet.forEach(runningDataModelList->{
+			for(RunningDataModel runningDataModel:runningDataModelList ){
+				ImportData importData = new ImportDataFromMySQLImpl(runningDataDao,runningDataModel);
+				GlobalData globalData = new GlobalDataFromProImpl();
+				executeAndCheck(sqlSearch,importData,globalData,strSysTime);
+			}
+			
+		});
 		
 		return strSysTime;
 	}

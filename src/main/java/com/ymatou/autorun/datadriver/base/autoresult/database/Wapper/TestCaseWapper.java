@@ -205,6 +205,7 @@ public class TestCaseWapper {
 		int passid = 0;
 		List<String> value = new ArrayList<String>();
 		value.add(createtime);
+		System.out.println(createtime);
 		String sql = "select id from Testpass where createtime=?";
 		ResultSet res = db.select(sql, value);
 		if (res.next()) {

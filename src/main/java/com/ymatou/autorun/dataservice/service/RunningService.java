@@ -1,8 +1,10 @@
 package com.ymatou.autorun.dataservice.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -15,7 +17,7 @@ import com.ymatou.autorun.AppRunConf;
 import com.ymatou.autorun.datadriver.base.autoresult.ResultParser;
 import com.ymatou.autorun.datadriver.base.autoresult.database.Wapper.TestCaseWapper;
 import com.ymatou.autorun.datadriver.base.utils.JsonBeanUtil;
-import com.ymatou.autorun.datadriver.base.utils.Logger;
+import com.ymatou.autorun.datadriver.base.utils.YMTDateUtil;
 import com.ymatou.autorun.datadriver.execute.helper.CaseExecute;
 import com.ymatou.autorun.datadriver.face.SqlSearch;
 import com.ymatou.autorun.dataservice.dao.RunningDataDao;
@@ -37,39 +39,42 @@ public class RunningService {
 	
 	@Transactional
 	public List<RunningDataModel> getRunningDataByCasesIdList(JSONObject caseIdList){
+		//run case集合
 		List<RunningDataModel> rets = runningDataDao.getRunningDataByCasesIdList(caseIdList.getJSONArray("caseIdList"));
 		
+		//run 站点集合
 		Set<String> domainList = new HashSet<>();
 		rets.forEach(ele->domainList.add(ele.getSceneHost()));
 		
-		String runfolder = CaseExecute.executeAndCheck(runningDataDao,sqlSearch,rets);
-		System.out.println(appRunConf.getEnv());
-		System.out.println(appRunConf.getResultPath());
+		//run case 按站点分组
+		List<List<RunningDataModel>> runSet = new ArrayList<>();
+		domainList.forEach(domain->{
+			runSet.add(rets.stream().filter(model->model.getSceneHost().equals(domain)).collect(Collectors.toList()));
+		});
 		
-		Logger.debug("程序初始化===");
+		//run case
+		String runfolder = CaseExecute.executeAndCheck(runningDataDao,sqlSearch,runSet);
+		
+		
+		//get result
 		TestCaseWapper tcw = new TestCaseWapper();
 		String env = appRunConf.getEnv();
 		ResultParser resultParser = new ResultParser();
 		String path = appRunConf.getResultPath()+"/"+runfolder;
 		
-
-
 		// 设置结果文件路径
 		resultParser.setPath(path);
 
 		//执行的批次号
-			domainList.forEach(domain->{
-				try {
-					int passid = resultParser.parserXmlToDb(tcw, env, domain);
-					System.out.println("domain:"+domain+",passid:"+passid);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-			
-		Logger.debug("解析结果文件入库结束============== ");
-		
+		domainList.forEach(domain->{ 
+			try {
+				int passid = resultParser.parserXmlToDb(tcw, env, domain);
+				YMTDateUtil.waitTime(2);
+				System.out.println("domain:"+domain+",passid:"+passid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 		return rets;
 	}
 	
