@@ -218,24 +218,5 @@ public class XmlUtil {
 		this.root = root;
 	}
 
-	public static void main(String args[]) throws FileNotFoundException, DocumentException {
-		String path = "./Results/api.accounting.i.ymatou.com/Ts_Accounting.xml";
-		XmlUtil xmlu = new XmlUtil(path);
-		Logger.debug("解析开始=========");
-		Logger.debug(xmlu.getRoot().attributeValue("description"));
-		Logger.debug(xmlu.getRoot().attributeValue("url"));
-		List<Element> caseElement = xmlu.getElementList("Testcase");
-		for (Element element : caseElement) {
-			Logger.debug(element.attributeValue("name"));
-			Logger.debug(element.attributeValue("description"));
-			Logger.debug(element.attributeValue("result"));
-			List<Element> es = element.elements();
-			for (Element element2 : es) {
-				Logger.debug(element2.getName());
-				Logger.debug(element2.attributeValue("timestamp"));
-				Logger.debug(element2.attributeValue("result"));
-				Logger.debug(element2.getData().toString());
-			}
-		}
-	}
+	
 }

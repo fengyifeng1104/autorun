@@ -20,8 +20,10 @@ import com.ymatou.autorun.datadriver.base.utils.JsonBeanUtil;
 import com.ymatou.autorun.datadriver.base.utils.YMTDateUtil;
 import com.ymatou.autorun.datadriver.execute.helper.CaseExecute;
 import com.ymatou.autorun.datadriver.face.SqlSearch;
+import com.ymatou.autorun.dataservice.dao.RunResultRecordDao;
 import com.ymatou.autorun.dataservice.dao.RunningDataDao;
 import com.ymatou.autorun.dataservice.model.RunResultDataModel;
+import com.ymatou.autorun.dataservice.model.RunResultRecordModel;
 import com.ymatou.autorun.dataservice.model.RunningDataModel;
 
 @Service
@@ -36,11 +38,16 @@ public class RunningService {
 	@Resource
 	private SqlSearch sqlSearch;
 	
+	@Resource
+	private RunResultRecordDao runResultRecordDao;
+	
 	
 	@Transactional
 	public List<RunningDataModel> getRunningDataByCasesIdList(JSONObject caseIdList){
 		//run case集合
 		List<RunningDataModel> rets = runningDataDao.getRunningDataByCasesIdList(caseIdList.getJSONArray("caseIdList"));
+		
+		String userName = rets.get(0).getReqUserName();
 		
 		//run 站点集合
 		Set<String> domainList = new HashSet<>();
@@ -65,16 +72,32 @@ public class RunningService {
 		// 设置结果文件路径
 		resultParser.setPath(path);
 
+		//结果集合
+		List<RunResultRecordModel> recordModels = new ArrayList<>();
+				
 		//执行的批次号
 		domainList.forEach(domain->{ 
 			try {
-				int passid = resultParser.parserXmlToDb(tcw, env, domain);
+				
+				int passId = resultParser.parserXmlToDb(tcw, env, domain);
 				YMTDateUtil.waitTime(2);
-				System.out.println("domain:"+domain+",passid:"+passid);
+				System.out.println("domain:"+domain+",passid:"+passId);
+				
+				RunResultRecordModel recordModel = new RunResultRecordModel();
+				recordModel.setAddTime(YMTDateUtil.getDate());
+				recordModel.setHostName(domain);
+				recordModel.setPassId(passId);
+				recordModel.setUserName(userName);
+				recordModel.setRunRecordName(runfolder);
+				recordModels.add(recordModel);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
+		
+		
+		runResultRecordDao.saveRunResultRecord(recordModels);
 		return rets;
 	}
 	

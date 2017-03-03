@@ -138,7 +138,7 @@ public class Logger {
         	
         	
         	XMLWriter writer =
-                     new XMLWriter(new OutputStreamWriter(new FileOutputStream("./results/" + parentFolderName+"/"+folderName + "/"+ subFolderName+"/" + suiteName
+                     new XMLWriter(new OutputStreamWriter(new FileOutputStream("./Results/" + parentFolderName+"/"+folderName + "/"+ subFolderName+"/" + suiteName
                              + ".xml"), "UTF-8"));
         
             // 将Document 对象跟当前线程绑定

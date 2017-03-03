@@ -341,46 +341,5 @@ public class TestCaseWapper {
 		return envid;
 	}
 
-	public static void main(String args[]) throws Exception {
-		TestCaseWapper tcw = new TestCaseWapper();
-//		TestCase bb = new TestCase();
-//		bb.setCreatetime(DataManager.getSysTime());
-//		bb.setUpdatetime(DataManager.getSysTime());
-//		bb.setName("TestCaseName1");
-//		bb.setTestsuiteid(1);
-//		bb.setDel(0);
-//		bb.setDescription("Description");
-//		tcw.insertTestcase(bb);
-//		Logger.debug(tcw.selectAppIdByDomain("api.accounting.i.ymatou.com"));
-		
-/*		TestPass pb=new TestPass();
-		pb.setEnvid(1);
-		pb.setApplicationid(22);
-		String createtime=DataManager.getSysTime();
-		pb.setCreatetime(createtime);
-		int testpassid=tcw.insertTestPass(pb);
-		Logger.debug(testpassid);
-		
-		TestSuiteResult tsrb=new TestSuiteResult();
-		tsrb.setTestpassid(testpassid);
-		tsrb.setTestsuiteid(123);
-		int tsrid=tcw.insertTestSuiteResult(tsrb);
-		Logger.debug(tsrid);
-		
-		TestCaseResult tcrb=new TestCaseResult();
-		tcrb.setStatus("1");
-		tcrb.setTestcaseid(123);
-		tcrb.setTestsuiteresultid(tsrid);
-		int tcrid=tcw.insertTestCaseResult(tcrb);
-		Logger.debug(tcrid);*/
-		
-/*		String selectSql="select count(*) from TestcaseResult where ISNULL(createtime)";
-		int count=tcw.getDb().select(selectSql, null).getInt(1);
-		Logger.debug("count:"+count);*/	
-		int count=106085;
-		String updateSql = "UPDATE TestcaseResult SET createtime = CURRENT_TIMESTAMP (6) WHERE ISNULL(createtime) LIMIT 1";
-		for(int i=0;i<count;i++){
-			Logger.debug("result:"+tcw.getDb().update(updateSql, null));
-		}
-	}
+
 }

@@ -357,17 +357,5 @@ public class ResultParser {
 		}	
 	}
 	
-	public static void main(String args[]) throws Exception {
-		// args 传入测试环境 和 站点 SIT1 api.accounting.i.ymatou.com
-		Logger.debug("程序初始化===");
-		TestCaseWapper tcw = new TestCaseWapper();
-		String env = "SIT1";
-		String domain ="operate.trading.iapi.ymatou.com" ;
-		ResultParser resultParser=new ResultParser();
-		String path="E:\\workspace\\source\\YmatouTest\\Results";
-		resultParser.setPath(path);
-		resultParser.parserXmlToDb(tcw, env, domain);
-		
-	}
 
 }
