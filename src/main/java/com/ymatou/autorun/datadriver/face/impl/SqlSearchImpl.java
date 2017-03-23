@@ -27,6 +27,10 @@ public class SqlSearchImpl implements SqlSearch{
 	@Qualifier("AppProductReleaseJdbcTemplate")
 	private JdbcTemplate appProductReleaseJdbcTemplate;
 	
+	@Autowired
+	@Qualifier("EvaluatedbJdbcTemplate")
+	private JdbcTemplate evaluatedbJdbcTemplate;
+	
 	
 	@Override
 	public List<Map<String, Object>> selectBy(String dataSourceName, String sqlStr) {
@@ -40,6 +44,9 @@ public class SqlSearchImpl implements SqlSearch{
 		}else if (SqlDSconf.AppProductReleaseStr.equals(dataSourceName)) {
 			return appProductReleaseJdbcTemplate.queryForList(ucaseStr);
 			
+		}else if (SqlDSconf.EvaluatedbStr.equals(dataSourceName)){
+			return evaluatedbJdbcTemplate.queryForList(ucaseStr);
+		
 		}else {
 			return integratedproductJdbcTemplate.queryForList(ucaseStr);
 			
